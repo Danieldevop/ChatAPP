@@ -10,6 +10,13 @@ import { tokenUrl, instanceLocator } from '../public/config.js'
 
 class App extends Component {
 
+	constructor() {
+		super()
+		this.state = {
+			messages: []
+		}
+	}
+
 	componentDidMount () {
 		const chatManager = new ChatManager({
 			instanceLocator,
@@ -25,7 +32,9 @@ class App extends Component {
 					roomId: 17664884,
 					hooks: {
 						onNewMessage: message => {
-							console.log('message.text: ', message.text)
+							this.setState({
+								messages: [...this.state.messages, message]
+							})
 						}
 					}
 				})
@@ -36,7 +45,7 @@ class App extends Component {
 		return (
 			<div className="container">
 				<RoomList />
-				<MessageList />
+				<MessageList messages={this.state.messages} />
 				<SendMessage />
 				<NewRoomForm />
 			</div>
